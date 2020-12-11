@@ -17,6 +17,10 @@ from pixell import enmap
 from pixell import reproject
 import h5py
 
+
+#A test line to check git. 
+
+
 ###################### adding arguments to run code ##############################
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--catalog", dest="catalog", help="cluster catalog to use", metavar="FILE")
