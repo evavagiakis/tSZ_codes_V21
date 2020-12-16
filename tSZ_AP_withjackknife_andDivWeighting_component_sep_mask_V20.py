@@ -155,24 +155,9 @@ for m in [1]:#[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]:#,1.0]:
 		#print 'div',np.mean(divsbin)
 #		print 'S/N',np.mean(dt)/err
 #		sn.append(-np.mean(dt)/err)
-#:)		dts.append(dtl)
-#:)		errs.append(err)
-	#print 'For m=',m
-	#print 'N=',len(ras)
-	#print dts
-	#print errs	
-#plt.plot([2,5,10,25,50,75,100,150,250,350,500,650,800,950,1100,1250,1400,1550,1700,1850,2000],errso,'o')
-#plt.ylabel('Jackknife Error')
-#plt.xlabel('Ngroups') 
-#plt.savefig('jkconv_20180919.png')               
+		dts.append(dtl)
+		errs.append(err)
 
-#plt.title('Bin 9')
-#plt.xlabel('z')
-#plt.ylabel('N')
-#plt.legend()
-#plt.show()
+np.savetxt('testoutput.txt',np.array([dts,errs]))
 
-#plt.xlabel('m')
-#plt.ylabel('Average Foreground Intensity')
-#plt.legend()
-#plt.show()
+
