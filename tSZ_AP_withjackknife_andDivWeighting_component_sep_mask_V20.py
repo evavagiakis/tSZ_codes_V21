@@ -1,12 +1,9 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-from enlib import enmap
+#from enlib import enmap
 import pandas as pd
 import h5py
-
-submaps2=h5py.File('samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_cmb_map_v1.0.0_rc_joint.fits_submaps.h5','r')
-submaps=h5py.File('samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_cmb_map_v1.0.0_rc_joint.fits_submaps.h5','r')
 
 def get_group(i,Ngroups,population):
 	lenGroup=len(population)/Ngroups
@@ -21,11 +18,8 @@ def get_group(i,Ngroups,population):
 def estimatorFunction(dt,divsmap,sel):
 	return np.sum(np.multiply(dt[sel],divsmap[sel]))/np.sum(divsmap[sel])
 
-data2=np.loadtxt('S16ILC_BN_2p1arcmin_V20cat_20201030.txt')
-data=np.loadtxt('S16ILC_D56_2p1arcmin_V20cat_20201030.txt')
-
-
-df=pd.read_csv('V20_DR15_Catalog_v2.csv', comment = '#')
+data2=np.loadtxt('ILCBN_20201223.txt')
+data=np.loadtxt('ILCD56_20201223.txt')
 
 ra=[data[0,x] for x in range(len(data[0,:]))]# if useforcompsepanalysis[x]==1]
 dec=[data[1,x] for x in range(len(data[1,:]))]# if useforcompsepanalysis[x]==1]
@@ -36,7 +30,7 @@ disk_std=[data[5,x] for x in range(len(data[5,:]))]# if useforcompsepanalysis[x]
 annulus_mean=[data[6,x] for x in range(len(data[6,:]))]# if useforcompsepanalysis[x]==1]
 annulus_std=[data[7,x] for x in range(len(data[7,:]))]# if useforcompsepanalysis[x]==1]
 divs=[data[8,x] for x in range(len(data[8,:]))]# if useforcompsepanalysis[x]==1]
-inds=range(len(ra))
+#inds=range(len(ra))
 print len(ra)
 
 ra2=[data2[0,x] for x in range(len(data2[0,:]))]# if useforcompsepanalysis[x]==2]
@@ -48,10 +42,8 @@ disk_std2=[data2[5,x] for x in range(len(data2[5,:]))]# if useforcompsepanalysis
 annulus_mean2=[data2[6,x] for x in range(len(data2[6,:]))]# if useforcompsepanalysis[x]==2]
 annulus_std2=[data2[7,x] for x in range(len(data2[7,:]))]# if useforcompsepanalysis[x]==2]
 divs2=[data2[8,x] for x in range(len(data2[8,:]))]# if useforcompsepanalysis[x]==2]
-inds2=range(len(ra2))
+#inds2=range(len(ra2))
 print len(ra2)
-
-width_rad = np.deg2rad(4.0*2.1*np.sqrt(2)/60.)
 
 print 'Len before adding together:'
 print len(disk_mean)
@@ -150,14 +142,15 @@ for m in [1]:#[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]:#,1.0]:
 	        print 'N=',len(zs)
 	        print '<z>=',np.mean(zs)
 		print '<l>=',np.mean(lums)
-		print 'dt',dtl*-0.00000036856# #np.sum(np.multiply(dt,divsbin))/np.sum(divsbin)
-		print 'jk err',err*0.00000036856
+		print 'dt',dtl#*-0.00000036856# #np.sum(np.multiply(dt,divsbin))/np.sum(divsbin)
+		print 'jk err',err#*0.00000036856
 		#print 'div',np.mean(divsbin)
 #		print 'S/N',np.mean(dt)/err
 #		sn.append(-np.mean(dt)/err)
 		dts.append(dtl)
 		errs.append(err)
 
-np.savetxt('testoutput.txt',np.array([dts,errs]))
+np.savetxt('ILC_20201223_AP.txt',np.array([dts,errs]))
+
 
 

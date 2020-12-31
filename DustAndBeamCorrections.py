@@ -31,9 +31,9 @@ def mc_tau_scaling_relation_error(y,pars,n): #Nick's hydrosim relationship MCMC 
 
 #Bins are in the following order: L116, L98, L79, L61, L43, L98D, L79D, L61D, L43D
 
-f150d=np.loadtxt('S18f150Donutraw.txt') #Load raw aperture photometry results for three map analyses 
-f090d=np.loadtxt('S18f090raw.txt')
-ILCd= np.loadtxt('S16ILCraw.txt')
+f150d=np.loadtxt('DR5f150_nocoreexcised_20201223_AP.txt') #Load raw aperture photometry results for three map analyses 
+f090d=np.loadtxt('DR5f090_nocoreexcised_20201223_AP.txt')
+ILCd= np.loadtxt('ILC_20201223_AP.txt')
 
 f150=f150d[0,:] #extract dTs 
 f150err=f150d[1,:] #extract errs
@@ -43,11 +43,16 @@ ILC=ILCd[0,:] #extract ys
 ILCerr=ILCd[1,:] #extract errs
 
 ################################ Dust corrections ###########################################################
-f150Dust=[0.043735,0.036873 ,0.028311 ,0.027812 ,0.025492 ,0.045007 ,0.028342 ,0.036278 ,0.026553] #Herschel dust corrections from Stefania
-f150Dusterr=[0.059536,0.028298 ,0.01674 ,0.017594 ,0.013509 ,0.031073 ,0.028272 ,0.039795 ,0.02056] #Herschal dust correction upper error bar
+d150=np.loadtxt('dust_coadd_f150.txt')
+d090=np.loadtxt('dust_coadd_f090.txt')
 
-f090Dust=[0.018791,0.015356 ,0.011432 ,0.012232 ,0.010424 ,0.019142 ,0.011636 ,0.015865 ,0.01118] #Herschel dust corrections from Stefania
-f090Dusterr=[0.03034,0.012307 ,0.007802 ,0.008122 ,0.006161 ,0.01478 ,0.013613 ,0.018879 ,0.010186] #Herschal dust correction upper error bar
+binselect=[4,3,2,1,0,8,7,6,5] #bins are in a different order in the text files than what we are working with here
+
+f150Dust=[d150[x,2] for x in binselect]#Herschel dust corrections from Stefania
+f150Dusterr=[d150[x,3] for x in binselect] #Herschal dust correction upper error bar
+
+f090Dust=[d090[x,2] for x in binselect] #Herschel dust corrections from Stefania
+f090Dusterr=[d090[x,3] for x in binselect] #Herschal dust correction upper error bar
 
 f150=[f150[x]-f150Dust[x] for x in range(len(f150))] #Perform Stefania's Herschel dust correction
 f150err=[np.sqrt(f150err[x]**2.+f150Dusterr[x]**2.) for x in range(len(f150))] #Propogate Stefania's Herschel dust correction error
@@ -67,9 +72,15 @@ ILC=[ILC[x]/ILCBeamCorr[x] for x in range(len(ILC))] #Perform Stefania's beam co
 ILCerr=[ILCerr[x]/ILCBeamCorr[x] for x in range(len(ILC))] #Perform Stefania's beam correction
 #############################################################################################################
 
+####Print dT results
+#print 'dT f150 corrected:', [np.round(x,2) for x in f150]
+#print 'dT f150 corrected err:', [np.round(x,2) for x in f150err]
+#print 'dT f090 corrected:', [np.round(x,2) for x in f090]
+#print 'dT f090 corrected err:', [np.round(x,2) for x in f090err]
+
 ################################ Conversion to y  ###########################################################
-cfac150=0.00000038312 #fSZ for S18 f150
-cfac090=0.00000024007 #fSZ for S18 f090
+cfac150=0.00000038312 #fSZ for DR5 f150
+cfac090=0.00000024007 #fSZ for DR5 f090
 
 f150=[-x*cfac150 for x in f150] #Converting dT to y
 f150err=[x*cfac150 for x in f150err] #Converting dTerr to yerr
@@ -77,6 +88,15 @@ f150err=[x*cfac150 for x in f150err] #Converting dTerr to yerr
 f090=[-x*cfac090 for x in f090] #Converting dT to y
 f090err=[x*cfac090 for x in f090err] #Converting dTerr to yerr
 #############################################################################################################
+
+####Print y results
+print 'y f150 corrected:', [np.round(x/1e-7,2) for x in f150]
+print 'y f150err corrected:', [np.round(x/1e-7,2) for x in f150err]
+print 'y f090 corrected:', [np.round(x/1e-7,2) for x in f090]
+print 'y f090err corrected:', [np.round(x/1e-7,2) for x in f090err]
+print 'y ILC corrected:', [np.round(x/1e-7,2) for x in ILC]
+print 'y ILCerr corrected:', [np.round(x/1e-7,2) for x in ILCerr]
+
 
 ############################### Calculate tau ###############################################################
 tau150=[tau_calc(f150[x]) for x in range(len(f150))] #Tau estimates from hydrosim relationship
@@ -88,12 +108,26 @@ tau090err=[tau_err_calc(f090[x],f090err[x]) for x in range(len(f090err))]
 tauILCerr=[tau_err_calc(ILC[x],ILCerr[x]) for x in range(len(ILCerr))]
 #############################################################################################################
 
+#####Print tau results
+print 'tau 150', [np.round(x/1e-4,2) for x in tau150]
+print 'tau 150err', [np.round(x/1e-4,2) for x in tau150err]
+print 'tau 090', [np.round(x/1e-4,2) for x in tau090]
+print 'tau 090err', [np.round(x/1e-4,2) for x in tau090err]
+print 'tau ILC', [np.round(x/1e-4,2) for x in tauILC]
+print 'tau ILCerr', [np.round(x/1e-4,2) for x in tauILCerr]
+
+
 ############################## MCMC Sampler for sys err estimate on tau #####################################
 n=1000
 tau150sys=[mc_tau_scaling_relation_error(x,pars,10000) for x in f150] #Tau systematic errors from MCMC sampler
 tau090sys=[mc_tau_scaling_relation_error(x,pars,10000) for x in f090]
 tauILCsys=[mc_tau_scaling_relation_error(x,pars,10000) for x in ILC]
 #############################################################################################################
+
+########Print tau sims
+print 'tau 150 sys err', [np.round(x/1e-4,2) for x in tau150sys]
+print 'tau 90 sys err', [np.round(x/1e-4,2) for x in tau090sys]
+print 'tau ILC sys err', [np.round(x/1e-4,2) for x in tauILCsys]
 
 ############################## Theory tau comparisons #######################################################
 theorytau = [4.439284824479226E-4,3.348820653104621E-4 ,2.4216433534549755E-4 ,1.767778718898415E-4 ,1.3927485788583183E-4 ,2.0889705718306475E-4 ,1.5270659977613805E-4 ,1.058116994456508E-4 ,0.696660489891753E-4]
@@ -112,11 +146,18 @@ fcILCsys=[tauILCsys[x]/theorytau[x] for x in range(len(tauILC))]
 
 #############################################################################################################
 
-print fc150sys
-print fc090sys
-print fcILCsys
+####Print fc results
+print 'fc150',[np.round(x,2) for x in fc150]
+print 'fc090',[np.round(x,2) for x in fc090]
+print 'fcILC',[np.round(x,2) for x in fcILC]
 
+print 'fc150err',[np.round(x,2) for x in fc150err]
+print 'fc090err',[np.round(x,2) for x in fc090err]
+print 'fcILCerr',[np.round(x,2) for x in fcILCerr]
 
+print 'fc150sys',[np.round(x,2) for x in fc150sys]
+print 'fc090sys',[np.round(x,2) for x in fc090sys]
+print 'fcILCsys',[np.round(x,2) for x in fcILCsys]
 
 
 

@@ -15,15 +15,15 @@ deg2rad = 0.01745 # deg to radian conversion factor
 
 
 ######################### Submap locations #######################################
-submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f150_night_map.fits_submaps.h5'
-divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f150_night_map.fits_divmaps.h5'
+#submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f150_night_map.fits_submaps.h5'
+#divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f150_night_map.fits_divmaps.h5'
 #submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f090_night_map.fits_submaps.h5'
 #divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/act_planck_s08_s18_cmb_f090_night_map.fits_divmaps.h5'
 
-#submapsLocation='samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_cmb_map_v1.0.0_rc_joint.fits_submaps.h5'
-#divmapsLocation='samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_cmb_map_v1.0.0_rc_joint.fits_divmaps.h5'
-#submapsLocation='samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_cmb_map_v1.0.0_rc_joint.fits_submaps.h5'
-#divmapsLocation='samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_cmb_map_v1.0.0_rc_joint.fits_divmaps.h5'
+#submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_cmb_map_v1.2.0_joint.fits_submaps.h5'
+#divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_cmb_map_v1.2.0_joint.fits_divmaps.h5'
+submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_cmb_map_v1.2.0_joint.fits_submaps.h5'
+divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_cmb_map_v1.2.0_joint.fits_divmaps.h5'
 
 psubmaps = h5py.File(submapsLocation, 'r')
 pdivmaps = h5py.File(divmapsLocation,'r')
@@ -46,7 +46,7 @@ S16ILC=np.array(df["S16ILC"])
 lumselect, raselect, decselect, zselect,foreg,inds = [], [], [], [], [],[]
 
 for i in range(len(lumd)): #selecting lums of sources
-	if (4.3e10<=lumd[i] and S18coadd[i]==1):
+	if (4.3e10<=lumd[i] and S16ILC[i]==1 and incompsepregion[i]==1):
 		lumselect.append(lumd[i])
         	raselect.append(rad[i])
         	decselect.append(decd[i])
@@ -63,9 +63,9 @@ print max(lumselect)
 ##################################################################################
 
 ########### Select radii for AP filtering ########################################
-fmax = sqrt(2) #factor which defines outer AP radius
+fmax = np.sqrt(2) #factor which defines outer AP radius
 radmax = 2.1 #arcmin 
-radbeam= 0.7 #arcmin, radius of any beam you'll use for core excising
+radbeam= 0.0#1.05 #arcmin, radius of any beam you'll use for core excising
 
 radius = float(radmax)
 radiusbeam = float(radbeam)
@@ -123,5 +123,5 @@ for l in range(len(raselect)):
 print 'Length of array'
 print len(disks)
 
-np.savetxt('S18f150_donut_duplicationcheck.txt',np.array([raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs]))
+np.savetxt('DR4ILC_tilec_single_tile_deep56_cmb_map_v1.2.0_joint_AP_v3cat_20201223.txt',np.array([raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs]))
 

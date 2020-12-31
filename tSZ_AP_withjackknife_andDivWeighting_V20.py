@@ -16,7 +16,7 @@ def get_group(i,Ngroups,population):
 def estimatorFunction(dt,divsmap,sel):
 	return np.sum(np.multiply(dt[sel],divsmap[sel]))/np.sum(divsmap[sel])
 
-data=np.loadtxt('S18f150_donut_duplicationcheck.txt')
+data=np.loadtxt('ILCBN_20201223.txt')
 
 ra=data[0,:]
 dec=data[1,:]
@@ -39,7 +39,7 @@ for m in [1]:
 	dts=[]
 	errs=[]
 	intsoverbins=[]
-	for i in [0,1,2]:#,3,4,10,11,12,13]:
+	for i in [0,1,2,3,4,10,11,12,13]:
 		if i <5:
 			ras=[ra[x] for x in range(len(lum)) if lum[x]>=lumcuts2[i]]
 			decs=[dec[x] for x in range(len(lum)) if lum[x]>=lumcuts2[i]]
@@ -85,6 +85,8 @@ for m in [1]:
 		err=np.sqrt(((len(avgs)-1.)/len(avgs))*np.sum((avgs-(np.sum(np.multiply(dt,divsbin))/np.sum(divsbin)))**2.0))
 		dtl=np.sum(np.multiply(dt,divsbin))/np.sum(divsbin)
 
+
+		print 'len(avgs)',len(avgs)
 		print 'BIN ', i
 		print '-----------------------------'
 	        print 'N=',len(zs)
@@ -94,5 +96,5 @@ for m in [1]:
 		dts.append(dtl)
 		errs.append(err)
 
-np.savetxt('testoutput.txt',np.array([dts,errs]))
+#np.savetxt('DR5f090_beamscale_20201223_AP.txt',np.array([dts,errs]))
 
