@@ -42,6 +42,11 @@ f090err=f090d[1,:] #extract errs
 ILC=ILCd[0,:] #extract ys 
 ILCerr=ILCd[1,:] #extract errs
 
+print 'raw s/n:', [f150[x]/f150err[x] for x in range(len(f150))]
+print 'raw s/n:', [f090[x]/f090err[x] for x in range(len(f090))]
+print 'raw s/n:', [ILC[x]/ILCerr[x] for x in range(len(ILC))]
+
+
 ################################ Dust corrections ###########################################################
 d150=np.loadtxt('dust_coadd_f150.txt')
 d090=np.loadtxt('dust_coadd_f090.txt')
@@ -73,10 +78,10 @@ ILCerr=[ILCerr[x]/ILCBeamCorr[x] for x in range(len(ILC))] #Perform Stefania's b
 #############################################################################################################
 
 ####Print dT results
-#print 'dT f150 corrected:', [np.round(x,2) for x in f150]
-#print 'dT f150 corrected err:', [np.round(x,2) for x in f150err]
-#print 'dT f090 corrected:', [np.round(x,2) for x in f090]
-#print 'dT f090 corrected err:', [np.round(x,2) for x in f090err]
+print 'dT f150 corrected:', [np.round(x,2) for x in f150]
+print 'dT f150 corrected err:', [np.round(x,2) for x in f150err]
+print 'dT f090 corrected:', [np.round(x,2) for x in f090]
+print 'dT f090 corrected err:', [np.round(x,2) for x in f090err]
 
 ################################ Conversion to y  ###########################################################
 cfac150=0.00000038312 #fSZ for DR5 f150
@@ -96,6 +101,7 @@ print 'y f090 corrected:', [np.round(x/1e-7,2) for x in f090]
 print 'y f090err corrected:', [np.round(x/1e-7,2) for x in f090err]
 print 'y ILC corrected:', [np.round(x/1e-7,2) for x in ILC]
 print 'y ILCerr corrected:', [np.round(x/1e-7,2) for x in ILCerr]
+
 
 
 ############################### Calculate tau ###############################################################

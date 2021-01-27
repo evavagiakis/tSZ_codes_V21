@@ -18,8 +18,8 @@ def get_group(i,Ngroups,population):
 def estimatorFunction(dt,divsmap,sel):
 	return np.sum(np.multiply(dt[sel],divsmap[sel]))/np.sum(divsmap[sel])
 
-data2=np.loadtxt('ILCBN_20201223.txt')
-data=np.loadtxt('ILCD56_20201223.txt')
+data2=np.loadtxt('SIMSBN_20201223.txt')
+data=np.loadtxt('SIMSD56_20201223.txt')
 
 ra=[data[0,x] for x in range(len(data[0,:]))]# if useforcompsepanalysis[x]==1]
 dec=[data[1,x] for x in range(len(data[1,:]))]# if useforcompsepanalysis[x]==1]

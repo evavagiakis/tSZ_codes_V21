@@ -123,5 +123,6 @@ for l in range(len(raselect)):
 print 'Length of array'
 print len(disks)
 
+#Save the output
 np.savetxt('DR4ILC_tilec_single_tile_deep56_cmb_map_v1.2.0_joint_AP_v3cat_20201223.txt',np.array([raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs]))
 

@@ -28,7 +28,12 @@ if (args.analysis[0] == 'ILCBN'):
 if (args.analysis[0] == 'ILCD56'):
 	submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_comptony_map_v1.2.0_joint.fits_submaps.h5'
 	divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_comptony_map_v1.2.0_joint.fits_divmaps.h5'
-
+if (args.analysis[0] == 'SIMSD56'):
+        submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_comptony_map_joint_v1.2.0_sim_baseline_00_0000.fits_submaps.h5'
+        divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_deep56_comptony_map_v1.2.0_joint.fits_divmaps.h5'
+if (args.analysis[0] == 'SIMSBN'):
+        submapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_comptony_map_joint_v1.2.0_sim_baseline_00_0000.fits_submaps.h5'
+        divmapsLocation='/home/ev66/samba/V20_DR15Catalog_submaps/tilec_single_tile_boss_comptony_map_v1.2.0_joint.fits_divmaps.h5'
 
 
 psubmaps = h5py.File(submapsLocation, 'r')
@@ -57,15 +62,16 @@ if (args.analysis[0] == 'DR5f150' or args.analysis[0] == 'DR5f090'):
 	        if (4.3e10<=lumd[i] and S18coadd[i]==1):
 	                inds.append(i)
 
-if (args.analysis[0] == 'ILCD56'):
+if (args.analysis[0] == 'ILCD56' or args.analysis[0] == 'SIMSD56'):
 	for i in range(len(lumd)): #selecting sources
 	        if (4.3e10<=lumd[i] and S16ILC[i]==1 and incompsepregion[i]==1):
 	                inds.append(i)
 
-if (args.analysis[0] == 'ILCBN'):
+if (args.analysis[0] == 'ILCBN' or args.analysis[0] == 'SIMSBN'):
 	for i in range(len(lumd)): #selecting sources
 		if (4.3e10<=lumd[i] and S16ILC[i]==1 and incompsepregion[i]==2):
 			inds.append(i)
+
 
 lumselect=[lumd[i] for i in inds]
 raselect=[rad[i] for i in inds]
@@ -132,5 +138,5 @@ for l in range(len(raselect)):
 print 'Length of array'
 print len(disks)
 
-np.savetxt('ILCD56_20201223.txt',np.array([raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs]))
+np.savetxt('SIMSBN_20201223.txt',np.array([raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs]))
 
