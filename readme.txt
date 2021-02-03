@@ -5,7 +5,10 @@ V20 analysis pipeline:
 	Returns: .csv catalog file
 	To run: >>> python CatalogCreationCode.py
 
-2) Submaps from the analyzed maps are extracted using the catalog produced by 1)
+2) Submaps from the analyzed maps are extracted using the catalog produced by 1) and codes by Patricio Gallardo. 
+	The script to call to generate submaps is: https://github.com/patogallardo/iskay/blob/master/misc/qsub_exportSubmaps.sh
+	Which will call the following script for each map: https://github.com/patogallardo/iskay/blob/master/misc/iskay_exportSubmaps.py
+	From here, this script will use pixell and iskay (the pairwise code) to generate the submaps
 
 3) tSZ_stacking_V20.py is used to stack these submaps for the full catalog sample and save raselect,decselect,lumselect,zselect,disks,disk_stds,rings,ring_stds,divs for the selected source sample via aperture photometry 
 	Takes: .csv catalog via 1), submaps extracted in 2), option of which map you are analyzing. Submap paths are hard coded in script, catalog and map analysis option are taken as arguments 
