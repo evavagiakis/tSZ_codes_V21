@@ -21,7 +21,7 @@ def tau_scaling_relation(y,ln_t,m):
         ln_t=ln_tau +m*np.log(y/1e-5) #Nick's hydrosim relationship
         return ln_t
 
-def mc_tau_scaling_relation_error(y,pars,n): #Nick's hydrosim relationship MCMC sampler for sys err estimate
+def mc_tau_scaling_relation_error(y,pars,n): #Nick's hydrosim relationship Monte Carlo sampler for sys err estimate
         ln_tau,m,err_lt,err_m=pars
         mc_ln_tau = ln_tau + np.random.normal(0,err_lt,n)
         mc_m = np.random.normal(m,err_m*m,n)
